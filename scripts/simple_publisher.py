@@ -10,7 +10,7 @@ def simple_publisher():
     rate = rospy.Rate(20) # 20hz
     while not rospy.is_shutdown():
         rand_float = random.random()*10
-        rospy.loginfo(rand_float)
+        #rospy.loginfo(rand_float)
         pub.publish(rand_float)
         rate.sleep()
 
