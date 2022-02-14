@@ -43,12 +43,12 @@ def dynamic_tf_cam_publisher():
     t_right.transform.rotation.y = q_right[1]
     t_right.transform.rotation.z = q_right[2]
     t_right.transform.rotation.w = q_right[3]
-    
+    rate = rospy.Rate(20.0)
     while not rospy.is_shutdown():
         br_left.sendTransform(t_left)
         br_right.sendTransform(t_right)
         try:
-            t_bot = tfBuffer.lookupTransform('/base_link_get', '/world', rospy.Time())
+            t_bot = tfBuffer.lookup_transform('right_cam', 'left_cam', rospy.Time())
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
             rate.sleep()
             continue
