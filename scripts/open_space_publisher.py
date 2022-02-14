@@ -1,23 +1,24 @@
 #!/usr/bin/env python
 import rospy
-from std_msgs.msg import Float32
 import math
+from sensor_msgs.msg import LaserScan
+from std_msgs.msg import Float32
+from ros_exercises.msg import OpenSpace
 
 
 def open_space_publisher():
-    rospy.init_node('open_space_publisher', anonymous=True)
+    rospy.init_node('open_space_publisher', anonymous=False)
     rospy.Subscriber("fake_scan", LaserScan, callback)
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
 def callback(data):
-    os_distance = rospy.Publisher('open_space.distance', Float32, queue_size=10)
-    os_angle = rospy.Publisher('open_space.angle', Float32, queue_size=10)
-    os_distance_out = max(data.data.ranges)
-    os_angle_out = data.data.angle_min + (data.data.angle_increment * data.data.ranges.index(os_distance_out))
-    rospy.loginfo(os_angle_out)
-    os_distance.publish(os_distance_out)
-    os_angle.publish(os_angle_out)
+    os = OpenSpace()
+    os_pub = rospy.Publisher('open_space', OpenSpace, queue_size=10)
+    os.distance = max(data.ranges)
+    os.angle = data.angle_min + (data.angle_increment * data.ranges.index(os.distance))
+    #rospy.loginfo(os_angle_out)
+    os_pub.publish(os)
 
 if __name__ == '__main__':
     open_space_publisher()
