@@ -6,7 +6,7 @@ import math
 
     
 def simple_subscriber():
-    rospy.init_node('simple_subscriber', anonymous=True)
+    rospy.init_node('simple_subscriber', anonymous=False)
     rospy.Subscriber("my_random_float", Float32, callback)
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
